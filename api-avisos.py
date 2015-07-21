@@ -1,8 +1,9 @@
 from suds.client import Client
 import csv
+import urlparse, urllib, os
 
-url = "file:///Users/dgiga/Documents/Python Scripts/deloitte/I016_AVISOS_GOB_ABIERTO_QA.WSDL"
-client = Client(url, username='GABIERTO', password="gab2015!!")
+url = urlparse.urljoin('file:', urllib.pathname2url(os.path.abspath('I016 - Avisos PRD.WSDL')))
+client = Client(url, username='GABIERTO', password="2x5=diez")
 
 desde = "20150608"
 hasta = "20150614"

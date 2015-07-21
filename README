@@ -1,0 +1,9 @@
+
+### Technologías
+
+Pyhton 2.7
+
+### Instalación
+
+python setup.py install
+
