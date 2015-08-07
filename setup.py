@@ -9,5 +9,5 @@ setup(name='mantenimiento obreas',
       author='',
       author_email='',
       url='http://git.gcba.gob.ar/labgcba/mantenimiento-obras/tree/master',
-      install_requires=['suds']
+      install_requires=['suds-jurko']
 )

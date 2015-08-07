@@ -3,17 +3,17 @@ import csv
 
 import urlparse, urllib, os
 
-url = urlparse.urljoin('file:', urllib.pathname2url(os.path.abspath('I016 - Ordenes PRD.WSDL')))
-client = Client(url, username='GABIERTO', password="2x5=diez")
+url = urlparse.urljoin('file:', urllib.pathname2url(os.path.abspath('I016 - Ordenes QA.WSDL')))
+client = Client(url, username='GABIERTO', password="gab2015!!")
 
 
-desde = "20150713"
-hasta = "20150720"
-tipos_ordenes = ["CAME"]
+desde = "20140801"
+hasta = "20150807"
+tipos_ordenes = ["ACRE", "CARE"]
 modo = "CREACION"
-columnas = ["NRO_ORDEN", "CLASE_ORDEN", "ORDEN_SUPERIOR", "ORDEN_INFERIOR", "DESCRIPCION", "STATUS_USUARIO", "GRP_PLANIFICADOR", "PTO_RESPONSABLE", "PRIORIDAD", "FECHA_CREACION", "FECHA_INI_EXTREMO", "FECHA_FIN_EXTREMO", "UBIC_TECNICA", "CALLE", "ALTURA", "AREA_EMPRESA", "EMP_OBJ_MANTENIM", "LOCAL", "CAMPO_CLASIF", "FECHA_ULT_MODIF", "RESP_ULT_MODIF", "CLAVE_MODELO", "CLAVE_MODELO_TXT", "DURACION"]#, "STATUS_OPERACION"]
+columnas = ["NRO_ORDEN", "CLASE_ORDEN", "ORDEN_SUPERIOR", "ORDEN_INFERIOR", "DESCRIPCION", "UBIC_TECNICA_DESC", "STATUS_USUARIO", "GRP_PLANIFICADOR", "PTO_RESPONSABLE", "PRIORIDAD", "FECHA_CREACION", "FECHA_INI_EXTREMO", "FECHA_FIN_EXTREMO", "UBIC_TECNICA", "CALLE", "ALTURA", "AREA_EMPRESA", "EMP_OBJ_MANTENIM", "LOCAL", "CAMPO_CLASIF", "FECHA_ULT_MODIF", "RESP_ULT_MODIF", "CLAVE_MODELO", "CLAVE_MODELO_TXT", "DURACION", "STATUS_OPERACION"]
 
-nombre_archivo = "ordenes-" + desde + "-" + hasta + ".csv"
+nombre_archivo = "ordenes-" + tipos_ordenes[0]+"-"+desde + "-" + hasta + ".csv" 
 
 file_ordenes = open(nombre_archivo, 'w')
 file_ordenes.seek(0)
