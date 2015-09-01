@@ -1,0 +1,18 @@
+import os
+
+
+db = dict(
+    engine='mysql',
+    user='root',
+    password='',
+    host='localhost',
+    db='mantenimiento',
+)
+
+db_url = db['engine'] + "://" + db['user'] + ":" + \
+    db['password'] + "@" + db['host'] + "/" + db['db']
+
+wsdl_path = os.path.abspath('archivo.WSDL')
+wsdl_username = 'user'
+wsdl_password = "pass"
+
