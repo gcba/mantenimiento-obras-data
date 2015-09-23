@@ -9,7 +9,8 @@ url = urlparse.urljoin(
 
 client = Client(url, username='GABIERTO', password="2x5=diez")  # PROD
 
-# client = Client(url, username='GABIERTO', password="gab2015!!") QA
+# client = Client(url, username='GABIERTO', password="gab2015!!")  # QA
+print client
 
 desde = "20150501"
 hasta = "20150807"
