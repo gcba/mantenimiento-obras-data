@@ -10,9 +10,8 @@ from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-conn_str = "mysql://" + config.db["user"] + ":" + \
-    config.db["password"] + "@" + config.db["host"] + "/" + config.db["db"]
-engine = create_engine(conn_str)
+
+engine = create_engine(config.db_url)
 # create a configured "Session" class
 Session = sessionmaker(bind=engine)
 # create a Session
@@ -46,10 +45,9 @@ class Orden(Base):
 Base.metadata.create_all(engine, checkfirst=True)
 
 url = urlparse.urljoin(
-    'file:', urllib.pathname2url(os.path.abspath('I016 - Ordenes PRD.WSDL')))
-client = Client(url, username='GABIERTO', password="2x5=diez")  # PROD
-# QA:
-#     client = Client(url, username='GABIERTO', password="gab2015!!")
+    'file:', urllib.pathname2url(config.wsdl_path))
+client = Client(
+    url, username=config.wsdl_username, password=config.wsdl_password)
 
 desde = "20150801"
 hasta = "20150807"
@@ -74,9 +72,9 @@ for tipo_orden in tipos_ordenes:
                     'utf8', 'ignore')
             else:
                 new_orden[columna.lower()] = None
-        # ev = session.query(Orden).filter(Orden.nro_orden == new_orden[
-        #     'nro_orden'], Orden.clave_modelo == new_orden['clave_modelo']).count()
-        # if not ev:
-        # Add record to DB
-        session.add(Orden(**new_orden))
-        session.commit()
+        ev = session.query(Orden).filter(Orden.nro_orden == new_orden[
+            'nro_orden'], Orden.clave_modelo == new_orden['clave_modelo']).count()
+        if not ev:
+            # Add record to DB
+            session.add(Orden(**new_orden))
+            session.commit()

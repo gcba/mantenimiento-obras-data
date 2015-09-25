@@ -2,3 +2,7 @@
 config.py
 *.csv
 *.WSDL
+README.html
+.DS_Store
+mantenimiento_obreas.egg-info/
+dist/
