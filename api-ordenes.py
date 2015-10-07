@@ -52,8 +52,8 @@ url = urlparse.urljoin(
 client = Client(
     url, username=config.wsdl_username, password=config.wsdl_password)
 
-desde = "20150801"
-hasta = "20150803"
+desde = "20150822"
+hasta = "20150831"
 tipos_ordenes = ["ACRE", "CARE"]
 modo = "CREACION"
 columnas = ["NRO_ORDEN", "CLASE_ORDEN", "DESCRIPCION", "UBIC_TECNICA", "UBIC_TECNICA_DESC", "FECHA_CREACION", "FECHA_INI_EXTREMO",
@@ -78,12 +78,12 @@ for tipo_orden in tipos_ordenes:
 
         geocod = json.load(urllib2.urlopen(
             'http://ws.usig.buenosaires.gob.ar/rest/normalizar_y_geocodificar_direcciones?calle=' + calle + '&altura=' + altura + '&desambiguar=1'))
-        if geocod["Normalizacion"]:
+        if "Normalizacion" in geocod.keys():
             new_orden["geo_x"] = ""
             new_orden["geo_y"] = ""
             new_orden["tipo_resultado"] = geocod[
                 "Normalizacion"]["TipoResultado"]
-        if geocod["GeoCodificacion"]:
+        if "GeoCodificacion" in geocod.keys():
             new_orden["geo_x"] = geocod["GeoCodificacion"]["x"]
             new_orden["geo_y"] = geocod["GeoCodificacion"]["y"]
 
