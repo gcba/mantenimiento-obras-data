@@ -1,6 +1,6 @@
 *.pyc
 config.py
-*.csv
+./*.csv
 *.WSDL
 README.html
 .DS_Store

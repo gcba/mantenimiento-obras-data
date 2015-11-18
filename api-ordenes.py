@@ -135,8 +135,8 @@ url = urlparse.urljoin(
 client = Client(
     url, username=config.wsdl_username, password=config.wsdl_password)
 
-desde = "20150629"
-hasta = "20150630"
+desde = "20151103"
+hasta = "20151105"
 tipos_ordenes = ["ACME", "CAME"]
 modos = ["CREACION", "MODIFICACION"]
 columnas = ["NRO_ORDEN", "CLASE_ORDEN", "DESCRIPCION", "UBIC_TECNICA", "UBIC_TECNICA_DESC", "FECHA_CREACION", "FECHA_INI_EXTREMO",
