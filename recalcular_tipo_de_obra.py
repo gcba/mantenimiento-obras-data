@@ -13,16 +13,13 @@ session = Session()
 Base = declarative_base()
 
 
-for row in session.query(Orden):
+id_default = session.query(TipoObra).filter(
+    TipoObra.name == 'Otros').first().tipo_id
 
-    tipo = session.query(ClaveTipo).filter(
-        ClaveTipo.clave == row.clave_modelo).first()
+clave_to_id = {}
+for clave_tipo in session.query(ClaveTipo):
+    clave_to_id[clave_tipo.clave] = clave_tipo.tipo_id
 
-    if tipo:
-        tipo_id = tipo.tipo_id
-    else:
-        tipo_id = session.query(TipoObra).filter(
-            TipoObra.name == 'Otros').first().tipo_id
-
-    row.tipo_id = tipo_id
-    session.commit()
+for row in session.query(Orden).all():
+    row.tipo_obra_id = clave_to_id.get(row.clave_modelo, id_default)
+session.commit()
