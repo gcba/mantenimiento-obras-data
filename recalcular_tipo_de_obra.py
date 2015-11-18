@@ -14,8 +14,6 @@ Base = declarative_base()
 
 
 for row in session.query(Orden):
-    print "viejo"
-    print row.status_id
 
     tipo = session.query(ClaveTipo).filter(
         ClaveTipo.clave == row.clave_modelo).first()
@@ -27,6 +25,4 @@ for row in session.query(Orden):
             TipoObra.name == 'Otros').first().tipo_id
 
     row.tipo_id = tipo_id
-
-    print "nuevo"
-    print tipo_id
+    session.commit()
