@@ -5,5 +5,18 @@ Pyhton 2.7
 
 ### Instalación
 
-python setup.py install
+pip install sqlalchemy
+apt-get install python-mysqldb  o yum install MySQL-python
+
+
+### Configuracion
+Crear DB "obras"
+Renombrar archivo config.py.sample a config.py y configurarle las variables correspondientes.
+
+
+### Correr el servicio
+python api-ordenes.py
+
+
+
 
