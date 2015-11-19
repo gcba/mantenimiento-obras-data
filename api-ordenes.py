@@ -7,6 +7,7 @@ import os
 import json
 import urllib2
 import csv
+import datetime
 from data_models import *
 
 from sqlalchemy.orm import sessionmaker
@@ -24,8 +25,28 @@ url = urlparse.urljoin(
 client = Client(
     url, username=config.wsdl_username, password=config.wsdl_password)
 
-desde = "20151103"
-hasta = "20151104"
+
+def get_date(dateFormat="%d-%m-%Y", backDays=0):
+    # Este es el posta
+    timeNow = datetime.datetime.now()
+    #StartDate = "12/10/15"
+    #timeNow = datetime.datetime.strptime(StartDate, "%m/%d/%y")
+    if (backDays != 0):
+        anotherTime = timeNow - datetime.timedelta(days=backDays)
+    else:
+        anotherTime = timeNow
+    return anotherTime.strftime(dateFormat)
+
+backDays = 1
+output_format = '%Y%m%d'  # '%d-%m-%Y'
+desde = get_date(output_format, backDays)
+print "Desde: " + desde
+
+backDays = 0
+output_format = '%Y%m%d'  # '%d-%m-%Y'
+hasta = get_date(output_format, backDays)
+print "Hasta: " + hasta
+
 tipos_ordenes = ["ACME", "CAME"]
 modos = ["CREACION", "MODIFICACION"]
 columnas = ["NRO_ORDEN", "CLASE_ORDEN", "DESCRIPCION", "UBIC_TECNICA", "UBIC_TECNICA_DESC", "FECHA_CREACION", "FECHA_INI_EXTREMO",
