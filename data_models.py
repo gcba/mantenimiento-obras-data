@@ -2,6 +2,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import config
+import csv
 
 engine = create_engine(config.db_url)
 # create a configured "Session" class
