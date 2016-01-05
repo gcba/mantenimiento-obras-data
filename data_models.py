@@ -58,8 +58,16 @@ class Orden(Base):
     comuna = Column(String(20))
 
     def __repr__(self):
-        return "<Orden(nro_orden='%s', clase_orden='%s', descripcion='%s', ubic_tecnica='%s', ubic_tecnica_desc='%s', geo_x='%s', geo_y='%s', fecha_creacion='%s', fecha_ini_extremo='%s', fecha_fin_extremo='%s', calle='%s', altura='%s', clave_modelo_txt='%s', tipo_obra_id='%s', comuna='%s')>" % (self.nro_orden, self.clase_orden, self.descripcion, self.ubic_tecnica, self.ubic_tecnica_desc, self.geo_x, self.geo_y, self.fecha_creacion,
-                                                                                                                                                                                                                                                                                                        self.fecha_ini_extremo, self.fecha_fin_extremo, self.calle, self.altura, self.clave_modelo_txt, self.tipo_obra_id, self.comuna)
+        return """<Orden(nro_orden='%s', clase_orden='%s', descripcion='%s',
+            ubic_tecnica='%s', ubic_tecnica_desc='%s', geo_x='%s', geo_y='%s',
+            fecha_creacion='%s', fecha_ini_extremo='%s',
+            fecha_fin_extremo='%s', calle='%s', altura='%s',
+            clave_modelo_txt='%s', tipo_obra_id='%s', comuna='%s')>""" % (
+            self.nro_orden, self.clase_orden, self.descripcion,
+            self.ubic_tecnica, self.ubic_tecnica_desc, self.geo_x, self.geo_y,
+            self.fecha_creacion, self.fecha_ini_extremo,
+            self.fecha_fin_extremo, self.calle, self.altura,
+            self.clave_modelo_txt, self.tipo_obra_id, self.comuna)
 
 
 class ClaveTipo(Base):
@@ -83,15 +91,19 @@ Base.metadata.create_all(engine, checkfirst=True)
 # Agregar tipo de obra en caso de que este vacia
 ev = session.query(TipoObra.name).count()
 if not ev:
-    session.add_all([TipoObra(name='Bacheo'), TipoObra(name='Senalizacion'), TipoObra(
-        name='Tapas'), TipoObra(name='Materiales'), TipoObra(name='Vereda'), TipoObra(
-        name='Cordon'), TipoObra(name='Pavimento'), TipoObra(name='Otros')])
+    session.add_all([TipoObra(name='Bacheo'), TipoObra(name='Senalizacion'),
+                     TipoObra(name='Tapas'), TipoObra(name='Materiales'),
+                     TipoObra(name='Vereda'), TipoObra(name='Cordon'),
+                     TipoObra(name='Pavimento'), TipoObra(name='Otros')])
     session.commit()
 
 
 def generar_orden(record):
-    columnas = ["NRO_ORDEN", "CLASE_ORDEN", "DESCRIPCION", "UBIC_TECNICA", "UBIC_TECNICA_DESC", "FECHA_CREACION", "FECHA_INI_EXTREMO",
-                "FECHA_FIN_EXTREMO",  "CALLE", "ALTURA", "CLAVE_MODELO", "CLAVE_MODELO_TXT", "AREA_EMPRESA", "STATUS_USUARIO", "FECHA_ULT_MODIF"]
+    columnas = ["NRO_ORDEN", "CLASE_ORDEN", "DESCRIPCION", "UBIC_TECNICA",
+                "UBIC_TECNICA_DESC", "FECHA_CREACION", "FECHA_INI_EXTREMO",
+                "FECHA_FIN_EXTREMO",  "CALLE", "ALTURA", "CLAVE_MODELO",
+                "CLAVE_MODELO_TXT", "AREA_EMPRESA", "STATUS_USUARIO",
+                "FECHA_ULT_MODIF"]
 
     new_orden = {}
     for columna in columnas:
@@ -119,7 +131,8 @@ def generar_orden(record):
         new_orden["status_id"] = None
         if new_orden["status_usuario"] is not None:
             result = session.query(StatusTraduccion).filter(
-                StatusTraduccion.status_usuario == new_orden["status_usuario"]).first()
+                StatusTraduccion.status_usuario ==
+                new_orden["status_usuario"]).first()
             if result:
                 new_orden["status_id"] = result.status_id
 
@@ -127,10 +140,15 @@ def generar_orden(record):
             "ubic_tecnica_desc"].split("-")[0].split(" ")
         altura = direccion_list[-1]
         calle = " ".join(
-            direccion_list[:-1]).replace(",", "").replace("PARCELA", "").replace(" ", "%20")
+            direccion_list[:-1]).replace(",",
+                                         "").replace("PARCELA",
+                                                     "").replace(" ",
+                                                                 "%20")
 
         geocod = json.load(urllib2.urlopen(
-            'http://ws.usig.buenosaires.gob.ar/rest/normalizar_y_geocodificar_direcciones?calle=' + calle + '&altura=' + altura + '&desambiguar=1'))
+            """http://ws.usig.buenosaires.gob.ar/rest/
+            normalizar_y_geocodificar_direcciones?calle=""" +
+            calle + '&altura=' + altura + '&desambiguar=1'))
         if "Normalizacion" in geocod.keys():
             new_orden["tipo_resultado"] = geocod[
                 "Normalizacion"]["TipoResultado"]
@@ -144,10 +162,11 @@ def generar_orden(record):
         comuna = "NA"
         try:
             res_comuna = json.load(urllib2.urlopen(
-                'http://ws.usig.buenosaires.gob.ar/datos_utiles?calle=' + calle + '&altura=' + altura))
+                'http://ws.usig.buenosaires.gob.ar/datos_utiles?calle=' +
+                calle + '&altura=' + altura))
             comuna = res_comuna["comuna"].split(" ")[1]
         except ValueError as e:
-            comuna = "Error direccion"
+            comuna = "Error direccion " + e
         except:
             comuna = "Error OTRO"
         new_orden["comuna"] = comuna
@@ -158,8 +177,10 @@ def load_data():
     # Agregar status de obra en caso de que este vacia
     ev = session.query(StatusObra.name).count()
     if not ev:
-        session.add_all([StatusObra(name='Planificado'), StatusObra(
-            name='En ejecucion'), StatusObra(name='Finalizado'), StatusObra(name='Denegado')])
+        session.add_all([StatusObra(name='Planificado'),
+                         StatusObra(name='En ejecucion'),
+                         StatusObra(name='Finalizado'),
+                         StatusObra(name='Denegado')])
         session.commit()
 
     # Chequear si ya se agrego el mapeo de clave modelo a tipo de obra
@@ -181,5 +202,6 @@ def load_data():
             mappings = csv.reader(csvfile, delimiter=',', quotechar='"')
             for row in mappings:
                 session.add(
-                    StatusTraduccion(**{"status_usuario": row[0], "status_id": row[1]}))
+                    StatusTraduccion(**{"status_usuario": row[0],
+                                        "status_id": row[1]}))
                 session.commit()

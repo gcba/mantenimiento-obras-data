@@ -3,8 +3,6 @@ from suds.client import Client
 import config
 import urlparse
 import urllib
-import os
-import csv
 import datetime
 from data_models import *
 
@@ -27,8 +25,8 @@ client = Client(
 def get_date(dateFormat="%d-%m-%Y", backDays=0):
     # Este es el posta
     timeNow = datetime.datetime.now()
-    #StartDate = "12/10/15"
-    #timeNow = datetime.datetime.strptime(StartDate, "%m/%d/%y")
+    # StartDate = "12/10/15"
+    # timeNow = datetime.datetime.strptime(StartDate, "%m/%d/%y")
     if (backDays != 0):
         anotherTime = timeNow - datetime.timedelta(days=backDays)
     else:
